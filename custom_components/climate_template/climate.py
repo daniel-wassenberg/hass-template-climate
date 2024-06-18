@@ -12,6 +12,8 @@ from homeassistant.components.climate import (
 from homeassistant.components.climate.const import (
     DEFAULT_MAX_TEMP,
     DEFAULT_MIN_TEMP,
+    DEFAULT_MIN_HUMIDITY, 
+    DEFAULT_MAX_HUMIDITY, 
     ATTR_HVAC_MODE,
     ATTR_FAN_MODE,
     ATTR_SWING_MODE,
@@ -55,6 +57,8 @@ CONF_MODE_LIST = "modes"
 CONF_SWING_MODE_LIST = "swing_modes"
 CONF_TEMP_MIN = "min_temp"
 CONF_TEMP_MAX = "max_temp"
+CONF_HUMIDITY_MIN = "min_humidity"
+CONF_HUMIDITY_MAX = "max_humidity"
 CONF_PRECISION = "precision"
 CONF_CURRENT_TEMP_TEMPLATE = "current_temperature_template"
 CONF_TEMP_STEP = "temp_step"
@@ -123,6 +127,8 @@ PLATFORM_SCHEMA = cv.PLATFORM_SCHEMA.extend(
         ): cv.ensure_list,
         vol.Optional(CONF_TEMP_MIN, default=DEFAULT_MIN_TEMP): vol.Coerce(float),
         vol.Optional(CONF_TEMP_MAX, default=DEFAULT_MAX_TEMP): vol.Coerce(float),
+        vol.Optional(CONF_HUMIDITY_MIN, default=DEFAULT_MIN_HUMIDITY): vol.Coerce(float),
+        vol.Optional(CONF_HUMIDITY_MAX, default=DEFAULT_MAX_HUMIDITY): vol.Coerce(float),
         vol.Optional(CONF_PRECISION): vol.In(
             [PRECISION_TENTHS, PRECISION_HALVES, PRECISION_WHOLE]
         ),
@@ -155,6 +161,8 @@ class TemplateClimate(TemplateEntity, ClimateEntity, RestoreEntity):
         self._attr_name = config[CONF_NAME]
         self._attr_min_temp = config[CONF_TEMP_MIN]
         self._attr_max_temp = config[CONF_TEMP_MAX]
+        self._attr_min_humidity = config[CONF_HUMIDITY_MIN]
+        self._attr_max_humidity = config[CONF_HUMIDITY_MAX]
         self._attr_target_temperature_step = config[CONF_TEMP_STEP]
 
         self._current_temp = None
